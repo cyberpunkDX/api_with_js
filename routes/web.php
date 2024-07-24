@@ -8,4 +8,5 @@ Route::get('/', function () {
 });
 
 Route::get('/register', [RegisteredController::class, 'index'])->name('register.index');
+Route::get('/register/verify', [RegisteredController::class, 'verify'])->name('register.verify');
 

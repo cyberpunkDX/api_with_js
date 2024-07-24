@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Mail\EmailVerification;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\UserStoreRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -17,15 +19,20 @@ class RegisteredController extends Controller
         return view('auth.register');
     }
 
+    public function verify()
+    {
+        return view('auth.verify');
+    }
+
 
     public function store(Request $request)
     {
         try {
             $validator = $request->validate([
                 'name' => ['required', 'string'],
-                'email' => ['required', 'string', 'exists:users,email'],
+                'email' => ['required', 'string', 'unique:users,email'],
                 'phone' => ['nullable', 'string', 'exists:users,phone'],
-                'password' => ['required'],
+                'password' => ['required', 'confirmed'],
             ]);
             if ($validator) {
                 DB::beginTransaction();
@@ -39,6 +46,7 @@ class RegisteredController extends Controller
 
                 if ($user) {
                     DB::commit();
+                    Mail::to($request->email)->send(new EmailVerification());
                     return response()->json([
                         "status" => "success",
                         "message" => "Account Created successfully"

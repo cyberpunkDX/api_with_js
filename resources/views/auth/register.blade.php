@@ -9,8 +9,12 @@
                         <h5 class="card-title fw-semibold mb-4">Forms</h5>
 
                         <form id="form">
-                           <p id="message"></p>
-                           <ol id="errors"></ol>
+
+                            <div>
+                                <p id="message"></p>
+                                <ol id="errors"></ol>
+                            </div>
+
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="mb-3">
@@ -33,23 +37,27 @@
                                         <input type="tel" name="phone" class="form-control" id="">
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                                        <input type="password" name="password_confirmation" class="form-control" id="exampleInputPassword1">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1">
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
                             </div>
                             <div class="col-lg-4">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
-
-
-
                         </form>
 
                     </div>
