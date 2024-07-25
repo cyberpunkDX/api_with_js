@@ -1,12 +1,6 @@
 <x-mail::message>
-# Introduction
-
-The body of your message.
-
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
-
+    # {{ $code }}
+Please copy and paste the code above in the required field on your browser to complete your email verification
 Thanks,<br>
 {{ config('app.name') }}
 </x-mail::message>

@@ -13,11 +13,11 @@
                                 <p id="message"></p>
                                 <ol id="errors"></ol>
                             </div>
+                            <div class="alert alert-info">
+                                A code was sent to your email address, please enter it to proceed with verification of your email address.
+                            </div>
 
                             <div class="row">
-                                <div class="alert alert-info">
-                                    A code was sent to your email address, please enter it to proceed with verification of your email address.
-                                </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <label class="form-label">Enter Code</label>
@@ -39,5 +39,5 @@
             </div>
         </div>
     </div>
-    <script src="js/api.js"></script>
+    <script src="{{ asset('js/verification.js') }}"></script>
 @endsection

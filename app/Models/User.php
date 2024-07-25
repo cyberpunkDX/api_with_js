@@ -22,6 +22,8 @@ class User extends Authenticatable
         'uuid',
         'email',
         'password',
+        'code',
+        'token',
     ];
 
     /**

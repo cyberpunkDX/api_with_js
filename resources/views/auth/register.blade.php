@@ -56,7 +56,7 @@
                                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
                             </div>
                             <div class="col-lg-4">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
 

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\UserStoreRequest;
+use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 
 class RegisteredController extends Controller
@@ -24,6 +24,46 @@ class RegisteredController extends Controller
         return view('auth.verify');
     }
 
+    public function verification(Request $request)
+    {
+        try {
+            $validator = $request->validate([
+                'code' => ['required', 'integer', 'min:4'],
+            ]);
+
+            if ($validator) {
+
+                $user = User::where('token', $request->token)
+                            ->where('code', $request->code)
+                            ->first();
+
+                if($user){
+
+                    $user->email_verified_at = Carbon::now();
+                    $user->save();
+
+                    return response()->json([
+                        "message" => "Email verified successfully",
+                        "status" => "success",
+                    ]);
+
+                }else{
+                    return response()->json([
+                        "message" => "Invalid verification code given",
+                        "status" => "error",
+                    ]);
+                }
+
+            }
+        } catch (ValidationException $e) {
+            $errors = $e->errors();
+            return response()->json([
+                'status' => "error",
+                'errors' => $errors,
+            ]);
+        }
+    }
+
 
     public function store(Request $request)
     {
@@ -31,7 +71,7 @@ class RegisteredController extends Controller
             $validator = $request->validate([
                 'name' => ['required', 'string'],
                 'email' => ['required', 'string', 'unique:users,email'],
-                'phone' => ['nullable', 'string', 'exists:users,phone'],
+                'phone' => ['nullable', 'string', 'unique:users,phone'],
                 'password' => ['required', 'confirmed'],
             ]);
             if ($validator) {
@@ -42,17 +82,20 @@ class RegisteredController extends Controller
                     'email' => $request->email,
                     'phone' => $request->phone,
                     'password' => $request->password,
+                    'code' => random_int(1000, 9000),
+                    'token' => Str::uuid(),
                 ]);
 
                 if ($user) {
                     DB::commit();
-                    Mail::to($request->email)->send(new EmailVerification());
+                    Mail::to($request->email)->send(new EmailVerification($user->code));
                     return response()->json([
                         "status" => "success",
-                        "message" => "Account Created successfully"
+                        "token" => $user->token,
+                        "message" => "Account created successfully. you would be automatically redirected to verify your email address"
                     ]);
                 }else {
-                    return response()->json(['success' => 'Account registered successfully']);
+                    return response()->json(['error' => 'Something went wrong']);
                 }
             } else {
                return response()->json([

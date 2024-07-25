@@ -13,4 +13,4 @@ Route::get('test', function() {
 });
 
 Route::post('/register/store', [RegisteredController::class, 'store'])->name('register.store');
-Route::get('/verify/user', [RegisteredController::class, 'verifyUser'])->name('verify.user');
+Route::post('/verify/user/token', [RegisteredController::class, 'verification'])->name('verify.user');

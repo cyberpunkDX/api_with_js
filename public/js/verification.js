@@ -10,7 +10,16 @@ form.addEventListener('submit', async function (e) {
     button.className = "btn btn-primary disabled"
 
     const payload = new FormData(form);
-    const request = new Request('http://127.0.0.1:8000/api/register/store', {
+    const url = new URL(window.location.href);
+
+    let pathname = url.pathname;
+    let pathParts = pathname.split('/');
+    let token = pathParts.pop();
+
+    payload.append("token", token);
+
+    console.log(payload);
+    const request = new Request('http://127.0.0.1:8000/api/verify/user/token', {
         method: 'POST',
         body: payload,
     });
@@ -30,15 +39,10 @@ form.addEventListener('submit', async function (e) {
             });
 
         } else {
+            button.textContent = "Successful";
+            button.className = "btn btn-success disabled"
             message.parentElement.className = "alert alert-success";
             message.textContent = data.message;
-
-            const userToken = data.token;
-            const baseURL = "http://127.0.0.1:8000/register/verify/";
-            const fullURL = `${baseURL}${userToken}`;
-            setTimeout(function() {
-                window.location.href = fullURL;
-            }, 5000);
         }
     } catch (errors) {
         console.error('Error:', errors);
@@ -50,18 +54,3 @@ function createListItem(value) {
     listItem.textContent = value;
     return listItem;
 }
-
-
-
-async function view(url) {
-
-    const request = new Request(url);
-    await fetch(request)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
-    .catch(error => console.log(error));
-}
-
-
